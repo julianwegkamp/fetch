@@ -82,14 +82,16 @@
   (p/let [body bodyp]
     (j/call bodyp :json)))
 
-(defn fetch-opts [{:keys [method accept content-type query-params body]
+(defn fetch-opts [{:keys [method accept content-type query-params body mode]
                    :or   {method       :get
                           accept       :transit-json
-                          content-type :transit-json}}]
+                          content-type :transit-json
+                          mode         "cors"}}]
   #js {:method   (str/upper-case (name method))
        :headers  #js {"Accept"       (c/get content-types accept)
                       "Content-Type" (c/get content-types content-type)}
-       :redirect "follow"})
+       :redirect "follow"
+       :mode mode})
 
 (defn request [url & [{:keys [method accept content-type query-params body]
                        :as   opts
